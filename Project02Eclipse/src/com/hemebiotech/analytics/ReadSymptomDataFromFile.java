@@ -1,10 +1,15 @@
 package com.hemebiotech.analytics;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import com.hemebiotech.analytics.exceptions.EmptyFileException;
 
 /**
  * Simple brute force implementation
@@ -13,35 +18,52 @@ import java.util.List;
 public class ReadSymptomDataFromFile implements ISymptomReader {
 
 	private String filepath;
-	
+
 	/**
 	 * 
-	 * @param filepath a full or partial path to file with symptom strings in it, one per line
+	 * @param filepath a full or partial path to file with symptom strings in it,
+	 *                 one per line
 	 */
-	public ReadSymptomDataFromFile (String filepath) {
+	public ReadSymptomDataFromFile(String filepath) {
 		this.filepath = filepath;
 	}
-	
+
 	@Override
 	public List<String> GetSymptoms() {
 		ArrayList<String> result = new ArrayList<String>();
-		
+
 		if (filepath != null) {
 			try {
-				BufferedReader reader = new BufferedReader (new FileReader(filepath));
+				BufferedReader reader = new BufferedReader(new FileReader(filepath));
 				String line = reader.readLine();
-				
+
+				if (line == null) {
+					throw new EmptyFileException("No symptom registered " + filepath + " file");
+				}
+
 				while (line != null) {
 					result.add(line);
 					line = reader.readLine();
 				}
 				reader.close();
+
+			} catch (FileNotFoundException fnfe) {
+				System.out.println("File " + filepath + " not found");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return result;
 	}
 
+	/**
+	 * @return a set of symptoms
+	 */
+	@Override
+	public Set<String> GetSymptomsSet() {
+		Set<String> result = new TreeSet<String>(this.GetSymptoms());
+		return result;
+
+	}
 }

@@ -85,6 +85,7 @@ dizziness
 arrhythmias
 rash
 rash
+covid
 fever
 dry mouth
 fever
@@ -96,5 +97,6 @@ inflamation
 low blood pressure
 anxiety
 anxiety
+covid
 cough
 blurred vision
