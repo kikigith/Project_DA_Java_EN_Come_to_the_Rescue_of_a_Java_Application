@@ -30,6 +30,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 
 	@Override
 	public List<String> GetSymptoms() {
+		System.out.println("Start method ReadSymptomDataFromFile.GetSymptoms");
 		ArrayList<String> result = new ArrayList<String>();
 
 		if (filepath != null) {
@@ -53,7 +54,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				e.printStackTrace();
 			}
 		}
-
+		System.out.println("End method ReadSymptomDataFromFile.GetSymptoms");
 		return result;
 	}
 

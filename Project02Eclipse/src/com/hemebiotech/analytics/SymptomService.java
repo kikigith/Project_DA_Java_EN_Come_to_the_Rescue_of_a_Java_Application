@@ -1,11 +1,9 @@
 package com.hemebiotech.analytics;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 /**
  * <b>SymptomService </b> a business service handling symptoms trends
@@ -14,7 +12,7 @@ import java.util.stream.Collectors;
  * 
  *
  */
-public class SymptomService {
+public class SymptomService implements ISymtomService {
 	private ISymptomReader symptomReader;
 
 	public SymptomService(ISymptomReader sReader) {
@@ -23,45 +21,24 @@ public class SymptomService {
 
 	/**
 	 * 
-	 * @return A sorted HashMap that consists of symptoms with their respective
-	 *         frequency
+	 * @return A TreeMap that consists of symptoms with their respective frequency
 	 */
+	@Override
 	public Map<String, Integer> generateAnalysis() {
-		List<String> symptoms = symptomReader.GetSymptoms().stream().sorted().collect(Collectors.toList());
-		Map<String, Integer> result = new HashMap<String, Integer>();
+		System.out.println("Start method SymptomService.generateAnalysis");
+
+		List<String> symptoms = symptomReader.GetSymptoms();
+		Map<String, Integer> result = new TreeMap<String, Integer>();
 
 		for (String us : symptoms) {
-			int usOccurence = Collections.frequency(symptoms, us);
-			result.put(us, usOccurence);
+			if (!result.containsKey(us)) {
+				int usOccurence = Collections.frequency(symptoms, us);
+				result.put(us, usOccurence);
+			}
 		}
-		Map<String, Integer> sortedResult = result.entrySet().stream().sorted(Map.Entry.comparingByKey())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue,
-						LinkedHashMap::new));
-		return sortedResult;
+
+		System.out.println("End method SymptomService.generateAnalysis");
+		return result;
 	}
-
-//	/**
-//	 * 
-//	 * @param writer : file to write the analysis to
-//	 */
-//	public void printAnalysis(FileWriter writer) {
-//		Map<String, Integer> analysis = generateAnalysis();
-//
-//		analysis.forEach((s, k) -> {
-//			try {
-//				writer.write(s + ":" + k + "\n");
-//			} catch (IOException ioe) {
-//				ioe.getMessage();
-//			}
-//		});
-//
-//	}
-
-//	public void buildMap(String symptom, Map<String, Integer> m) {
-//	
-//	m.merge(symptom, 1,(0,n) ->{
-//		return 0+n;
-//	});
-//}
 
 }

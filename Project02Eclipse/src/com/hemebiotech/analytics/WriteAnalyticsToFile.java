@@ -26,15 +26,15 @@ public class WriteAnalyticsToFile implements IAnalysisWriter {
 	 */
 	@Override
 	public void printResult() {
-
-		analysis.forEach((s, k) -> {
+		System.out.println("Start method WriteAnalyticsToFile.GetSymptoms");
+		analysis.forEach((key, value) -> {
 			try {
-				fwriter.write(s + ":" + k + "\n");
+				fwriter.write(key + ":" + value + "\n");
 			} catch (IOException ioe) {
 				ioe.getMessage();
 			}
 		});
-
+		System.out.println("End method WriteAnalyticsToFile.GetSymptoms");
 	}
 
 }
