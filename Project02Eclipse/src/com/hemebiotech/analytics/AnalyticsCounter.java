@@ -12,13 +12,16 @@ public class AnalyticsCounter {
 		ISymptomReader rsDF = new ReadSymptomDataFromFile(filepath);
 		ISymtomService symService = new SymptomService(rsDF);
 		// next generate output
+		FileWriter writer = null;
 		try {
-			FileWriter writer = new FileWriter("result.out");
+			writer = new FileWriter("result.out");
 			IAnalysisWriter anWriter = new WriteAnalyticsToFile(writer, symService.generateAnalysis());
 			anWriter.printResult();
-			writer.close();
+
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
+		} finally {
+			writer.close();
 		}
 
 	}

@@ -30,10 +30,9 @@ public class SymptomService implements ISymtomService {
 		List<String> symptoms = symptomReader.GetSymptoms();
 		Map<String, Integer> result = new TreeMap<String, Integer>();
 
-		for (String us : symptoms) {
-			if (!result.containsKey(us)) {
-				int usOccurence = Collections.frequency(symptoms, us);
-				result.put(us, usOccurence);
+		for (String symptom : symptoms) {
+			if (!result.containsKey(symptom)) {
+				result.put(symptom, Collections.frequency(symptoms, symptom));
 			}
 		}
 

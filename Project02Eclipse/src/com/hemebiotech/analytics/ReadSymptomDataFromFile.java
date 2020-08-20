@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.hemebiotech.analytics.exceptions.EmptyFileException;
-
 /**
  * Simple brute force implementation
  *
@@ -34,24 +32,20 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 		ArrayList<String> result = new ArrayList<String>();
 
 		if (filepath != null) {
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(filepath));
-				String line = reader.readLine();
 
-				if (line == null) {
-					throw new EmptyFileException("No symptom registered " + filepath + " file");
-				}
+			try (BufferedReader reader = new BufferedReader(new FileReader(filepath));) {
+
+				String line = reader.readLine();
 
 				while (line != null) {
 					result.add(line);
 					line = reader.readLine();
 				}
-				reader.close();
 
 			} catch (FileNotFoundException fnfe) {
 				System.out.println("File " + filepath + " not found");
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 		}
 		System.out.println("End method ReadSymptomDataFromFile.GetSymptoms");
